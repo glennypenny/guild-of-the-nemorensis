@@ -6,7 +6,7 @@
 | Scope | Conceptual model only; SQLite types and constraints come in the logical model |
 | Related documents | `00_project_brief.md`, `03_data_dictionary.md`, `04_logical_model.md` (next) |
 
-This document describes the domain in business terms, independent of SQLite. It follows the TM113 conceptual-model pattern: domain of discourse, entities and attributes, relationships, business rules, assumptions, and limitations.
+This document describes the domain in business terms, independent of SQLite. It follows a conventional conceptual-model pattern: domain of discourse, entities and attributes, relationships, business rules, assumptions, and limitations.
 
 ## 1. Domain of discourse
 

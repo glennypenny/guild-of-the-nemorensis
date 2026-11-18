@@ -5,7 +5,7 @@
 | Status | Session 1 draft; final DDL confirmed in Session 2 |
 | Related documents | `02_conceptual_model.md`, `04_logical_model.md` (next), `sql/schema.sql` (next) |
 
-This dictionary defines every column in the database. It follows the TM113 data-dictionary pattern: meaning, type, permitted values, required or optional, and an example.
+This dictionary defines every column in the database. It follows a conventional data-dictionary pattern: meaning, type, permitted values, required or optional, and an example.
 
 ## 1. How to read this document
 

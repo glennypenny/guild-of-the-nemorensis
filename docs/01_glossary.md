@@ -2,6 +2,10 @@
 
 A living glossary for the project. If a term is missing, add it here rather than letting it become mysterious.
 
+> **Don't read this cover to cover.** It is a reference, not a book. Start with the ten core terms below and come back when a term appears in the build.
+>
+> **Core ten:** database, table, row, column, primary key, foreign key, `NULL`, constraint, query, schema.
+
 ## 1. Data modelling
 
 | Term | Plain English | In this project |

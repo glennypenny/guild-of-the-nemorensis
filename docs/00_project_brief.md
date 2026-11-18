@@ -105,9 +105,9 @@ An item is either assigned to one character or unassigned in the guild vault. A 
 
 All data is original and hand-authored for this project. No copyrighted game data, scraped wiki content, or personal data is used. If names or lore are drawn from the author's own world-building, that is original work and will be noted in the README. The dataset will be small enough to inspect by hand.
 
-## 10. TM113 alignment
+## 10. Design approach
 
-The documentation mirrors the TM113 data-modelling sequence:
+The documentation follows a conventional data-modelling sequence:
 
 1. Domain of discourse and limitations.
 2. Conceptual data model: entities, attributes, relationships, business rules.
@@ -115,7 +115,7 @@ The documentation mirrors the TM113 data-modelling sequence:
 4. Logical data model: target DBMS, implications, ERD, keys, constraints.
 5. Physical implementation: SQLite schema, seed data, queries, tests.
 
-The method is reused; the BakeryBase scenario and TMA01 content are not. This keeps the portfolio original and avoids academic-integrity problems.
+The domain, data, schema, and queries are original to this project.
 
 ## 11. Definition of done
 
@@ -152,6 +152,6 @@ A fresh clone can be built and tested with one command, and the README tells the
 - Slots: Weapon, Off-hand, Head, Chest, Legs, Feet, Accessory.
 - Stats: attack, defense, healing, speed.
 - Python 3.12 + SQLite 3.45 + pytest in a project venv.
-- Repo separate from the Open University work.
+- Repo is standalone and self-contained.
 - Data hand-authored and original.
 - License: TBD (MIT for code; CC BY 4.0 or CC0 for data).
