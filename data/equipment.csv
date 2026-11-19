@@ -1,13 +1,13 @@
 name,slot,rarity,cost_gold,attack_bonus,defense_bonus,healing_bonus,speed_bonus,character_name
-Scorpion blade,Weapon,Rare,100,10,0,0,5,
-Shield of the moon,Off-hand,Epic,90,0,20,0,0,
-Ring of flames,Accessory,Uncommon,30,5,0,0,0,
+Scorpion blade,Weapon,Rare,100,10,0,0,5,Santos
+Shield of the moon,Off-hand,Epic,90,0,20,0,0,Brabby
+Ring of flames,Accessory,Uncommon,30,5,0,0,0,Santos
 Tank top,Chest,Legendary,200,5,5,5,5,
-Speedy leggings,Legs,Common,20,0,0,0,5,
-Hard hat,Head,Common,50,0,5,0,0,
-Stave of Sunlight,Weapon,Epic,80,0,5,10,0,
+Speedy leggings,Legs,Common,20,0,0,0,5,Brabby
+Hard hat,Head,Common,50,0,5,0,0,Brabby
+Stave of Sunlight,Weapon,Epic,80,0,5,10,0,Jill
 Sharp shiv,Off-hand,Uncommon,70,5,0,0,0,
-Priest robes,Chest,Common,30,0,0,5,0,
+Priest robes,Chest,Common,30,0,0,5,0,Jill
 Ring of the wind,Accessory,Rare,80,0,0,0,5,
 Staff of the storm,Weapon,Epic,100,5,5,5,0,
 Gloves of the wind,Off-hand,Rare,70,0,5,0,5,
