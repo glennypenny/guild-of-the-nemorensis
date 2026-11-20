@@ -55,6 +55,13 @@ def build():
                     int(row["speed_bonus"]), character_id
                 )
             )
+    # 8. Make the database build fail if unhealthy.
+    problems = conn.execute("PRAGMA foreign_key_check").fetchall()
+    if problems:
+        raise RuntimeError(f"Foreign key problems: {problems}")
+    result = conn.execute("PRAGMA integrity_check").fetchone()[0]
+    if result != "ok":
+        raise RuntimeError(f"Integrity check failed: {result}")
     # Commit, close, and print a one-line confirmation.
     conn.commit()
     conn.close()
