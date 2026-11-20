@@ -5,7 +5,7 @@
 | Project | Guild of the Nemorensis — Gear Audit |
 | Repository | `guild-of-the-nemorensis` |
 | Author | Glen Salmon |
-| Status | Session 1 complete — domain model; schema and data next |
+| Status | Work in progress — schema, seed data, and build pipeline complete; analysis queries and tests next |
 | Version | 0.1.0 |
 | Target roles | QA / software testing; data analyst |
 | Stack | Python 3.12, SQLite 3.45, pytest |
@@ -137,9 +137,9 @@ A fresh clone can be built and tested with one command, and the README tells the
 | Session | Work | Output | Status |
 |---|---|---|---|
 | 1 | Brief, glossary, conceptual model, data dictionary | `docs/00`–`03`, `docs/07` | Complete |
-| 2 | Logical model, schema, ERD | `docs/04`, `sql/schema.sql` | Next |
-| 3 | Seed CSVs, build script, integrity checks | `data/`, `src/build_db.py` | Planned |
-| 4 | Views and eight queries | `sql/views.sql`, `sql/queries/`, outputs | Planned |
+| 2 | Schema and ERD | `sql/schema.sql` | Complete |
+| 3 | Seed CSVs, build script, health checks | `data/`, `src/build_db.py` | Complete |
+| 4 | Views and eight queries | `sql/views.sql`, `sql/queries/`, outputs | In progress |
 | 5 | pytest suite and defect log | `tests/`, `docs/05`–`06` | Planned |
 | 6 | README polish, LinkedIn, CV bullets | public repo | Planned |
 

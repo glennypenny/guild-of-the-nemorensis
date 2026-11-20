@@ -48,7 +48,7 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 **What they are testing:** Do you understand cardinality and normalisation, or did you just stop early?
 
-**Evidence:** `docs/02_conceptual_model.md` section 9; `docs/04_logical_model.md` (Session 2).
+**Evidence:** `docs/02_conceptual_model.md` section 9; `sql/schema.sql`.
 
 **Prompts:**
 
@@ -159,7 +159,7 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 **What they are testing:** Do you have a testing mindset, or do you only test the happy path?
 
-**Evidence:** `docs/05_test_plan.md` (Session 5), `tests/` (Session 5), `docs/06_defect_log.md` (Session 5).
+**Evidence:** `docs/05_test_plan.md` and `docs/06_defect_log.md` (planned), `tests/` (planned).
 
 **Prompts:**
 

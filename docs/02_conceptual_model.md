@@ -2,9 +2,9 @@
 
 | Field | Value |
 |---|---|
-| Status | Session 1 complete |
-| Scope | Conceptual model only; SQLite types and constraints come in the logical model |
-| Related documents | `00_project_brief.md`, `03_data_dictionary.md`, `04_logical_model.md` (next) |
+| Status | Complete; implemented in `sql/schema.sql` |
+| Scope | Conceptual model only; SQLite types and constraints live in the schema |
+| Related documents | `00_project_brief.md`, `03_data_dictionary.md`, `sql/schema.sql` |
 
 This document describes the domain in business terms, independent of SQLite. It follows a conventional conceptual-model pattern: domain of discourse, entities and attributes, relationships, business rules, assumptions, and limitations.
 

@@ -2,8 +2,8 @@
 
 | Field | Value |
 |---|---|
-| Status | Session 1 draft; final DDL confirmed in Session 2 |
-| Related documents | `02_conceptual_model.md`, `04_logical_model.md` (next), `sql/schema.sql` (next) |
+| Status | Final; implemented in `sql/schema.sql` |
+| Related documents | `02_conceptual_model.md`, `sql/schema.sql` |
 
 This dictionary defines every column in the database. It follows a conventional data-dictionary pattern: meaning, type, permitted values, required or optional, and an example.
 

@@ -20,8 +20,8 @@ A living glossary for the project. If a term is missing, add it here rather than
 | Many-to-many | Many rows in A can match many rows in B. Needs a junction table. | Not used in the MVP; would be needed if items could be shared. |
 | Junction table | A table with foreign keys to two other tables, used to represent many-to-many. | Not in the MVP. |
 | Conceptual data model (CDM) | A business-level model: entities, attributes, relationships, rules. No SQLite types yet. | `docs/02_conceptual_model.md`. |
-| Logical data model (LDM) | The CDM mapped to a specific database: tables, columns, types, keys, constraints. | `docs/04_logical_model.md` (Session 2). |
-| Physical schema | The actual SQL that creates the database. | `sql/schema.sql` (Session 2). |
+| Logical data model (LDM) | The CDM mapped to a specific database: tables, columns, types, keys, constraints. | `docs/03_data_dictionary.md` and `sql/schema.sql`. |
+| Physical schema | The actual SQL that creates the database. | `sql/schema.sql`. |
 | Data dictionary | A table of every column: meaning, type, permitted values, required/optional, example. | `docs/03_data_dictionary.md`. |
 | ERD | Entity-relationship diagram. A picture of entities and their relationships. | Mermaid diagram in the conceptual model and README. |
 | Normalisation | Organising data so each fact is stored once, reducing duplication and update anomalies. | Character facts live in `characters`; item facts live in `equipment`; the link is a foreign key. |
@@ -121,8 +121,8 @@ A living glossary for the project. If a term is missing, add it here rather than
 | Positive test | Confirms that valid input succeeds. | Insert a valid character. |
 | Negative test | Confirms that invalid input is rejected. | Insert a character with role `Wizard`. |
 | Defect | A bug: behaviour that violates the requirements. | Recorded in the defect log. |
-| Defect log | A record of symptom, root cause, fix, and regression test. | `docs/06_defect_log.md` (Session 5). |
-| Test plan | What will be tested, how, and with what data. | `docs/05_test_plan.md` (Session 5). |
+| Defect log | A record of symptom, root cause, fix, and regression test. | `docs/06_defect_log.md` (planned). |
+| Test plan | What will be tested, how, and with what data. | `docs/05_test_plan.md` (planned). |
 | Coverage | How much of the requirements and code are tested. | Qualitative here: every business rule has a test. |
 | CI | Continuous integration: run tests automatically on push. | Optional stretch. |
 | `pytest` | A Python test framework. | `pytest -q`. |

@@ -14,6 +14,9 @@ __pycache__/
 .env
 .env.*
 
+# Local scratch
+invented_names.txt
+
 # OS and editor files
 .DS_Store
 .vscode/
