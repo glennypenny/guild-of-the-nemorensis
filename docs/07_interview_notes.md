@@ -21,7 +21,7 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 **What they are testing:** Can you explain a design clearly, from the domain to the tables, without hiding behind jargon?
 
-**Evidence:** `docs/02_conceptual_model.md`, `docs/03_data_dictionary.md`, `sql/schema.sql` (Session 2), ERD in the README.
+**Evidence:** `docs/02_conceptual_model.md`, `docs/03_data_dictionary.md`, `sql/schema.sql`, ERD in the README.
 
 **Prompts:**
 
@@ -76,7 +76,7 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 **What they are testing:** Do you understand optional relationships and referential actions?
 
-**Evidence:** `sql/schema.sql` (Session 2); `tests/test_constraints.py::test_delete_character_returns_gear_to_vault` (Session 5).
+**Evidence:** `sql/schema.sql`; `tests/test_constraints.py::test_delete_character_returns_gear_to_vault`.
 
 **Prompts:**
 
@@ -103,7 +103,7 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 **What they are testing:** Can you enforce a business rule at the database level rather than relying on the application?
 
-**Evidence:** `sql/schema.sql` partial unique index (Session 2); `tests/test_constraints.py` (Session 5).
+**Evidence:** `sql/schema.sql` partial unique index; `tests/test_constraints.py`.
 
 **Prompts:**
 
@@ -129,7 +129,7 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 **What they are testing:** Do you know the difference between database constraints, application validation, and testing?
 
-**Evidence:** `sql/schema.sql`, `docs/03_data_dictionary.md`, `tests/` (Session 5).
+**Evidence:** `sql/schema.sql`, `docs/03_data_dictionary.md`, `tests/test_constraints.py`.
 
 **Prompts:**
 
@@ -151,7 +151,7 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 >
 
-**Numbers to include:** 5 constraint types; 15+ tests.
+**Numbers to include:** 5 constraint types; 50 tests.
 
 **Confidence:** [ ] 1 [ ] 2 [ ] 3 [ ] 4 [ ] 5
 
@@ -159,13 +159,13 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 **What they are testing:** Do you have a testing mindset, or do you only test the happy path?
 
-**Evidence:** `docs/05_test_plan.md` and `docs/06_defect_log.md` (planned), `tests/` (planned).
+**Evidence:** `docs/05_test_plan.md`, `docs/06_defect_log.md`, `tests/`.
 
 **Prompts:**
 
-- Four layers: schema, constraints, data quality, queries.
+- Five layers: schema, constraints, data quality, queries, and the build pipeline.
 - Regression tests for every defect found.
-- Fixtures create a fresh temporary database for each test.
+- One session fixture builds a temporary database; each test rolls back its changes.
 - `PRAGMA integrity_check` and `PRAGMA foreign_key_check` for whole-database health.
 - Positive and negative tests; boundary values; NULL cases.
 - Known expected results for query tests.
@@ -179,7 +179,7 @@ This is a living document. Do not memorise a script. Write each answer in your o
 
 >
 
-**Numbers to include:** 4 test layers; 15+ tests; 3–5 defects.
+**Numbers to include:** 5 test layers; 50 tests; 4 defects.
 
 **Confidence:** [ ] 1 [ ] 2 [ ] 3 [ ] 4 [ ] 5
 
@@ -250,26 +250,32 @@ This is a living document. Do not memorise a script. Write each answer in your o
 | Roles | 4 |
 | Rarities | 5 |
 | Analysis queries | 8 |
-| Tests | 15+ |
-| Defects in the log | 3–5 |
-| Commands to build and test | 1 |
+| Tests | 50 |
+| Defects in the log | 4 |
+| Commands to build and test | 2 |
 | External data sources | 0 |
 
 ## Career assets
 
-To complete in Session 6.
+Drafted from the finished project. Edit until it sounds like you.
 
 ### CV bullet 1
 
->
+> Designed a two-table SQLite schema with primary and foreign keys, `CHECK`
+> constraints, `STRICT` tables, and a partial unique index, then wrote eight
+> analysis queries using joins, CTEs, aggregates, and window functions.
 
 ### CV bullet 2
 
->
+> Built an atomic Python/CSV build pipeline with `PRAGMA integrity_check` and
+> `foreign_key_check`, and a 50-test pytest suite covering schema, constraints,
+> data quality, queries, and build failure handling; logged four defects with
+> regression tests.
 
 ### LinkedIn post hook
 
->
+> I'm enjoying learning SQL, so I built my own project: **Guild of the
+> Nemorensis — Gear Audit**.
 
 ## Questions I still have
 

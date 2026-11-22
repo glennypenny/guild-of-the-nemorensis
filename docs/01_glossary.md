@@ -33,7 +33,7 @@ A living glossary for the project. If a term is missing, add it here rather than
 | Orphan | A child row that references a parent row that does not exist. | An equipment row with `character_id = 999` when no character 999 exists. |
 | Business rule | A rule the domain must obey. | "A character can have at most one item per slot." |
 | Seed data | The initial data loaded into the database. | `data/characters.csv`, `data/equipment.csv`. |
-| Fixture | Reusable setup or data for a test. | A small in-memory database with two characters and four items. |
+| Fixture | Reusable setup or data for a test. | A session-scoped temporary database built from the real 12-character, 40-item CSVs. |
 | Synthetic data | Invented data, not collected from real people or a live system. | All 12 characters and 40 items. |
 | Provenance | Where the data came from and whether it may be reused. | Original, hand-authored; no copyrighted game data. |
 
@@ -61,16 +61,16 @@ A living glossary for the project. If a term is missing, add it here rather than
 | Dynamic typing | Values carry their own type; columns do not strictly enforce a type by default. | SQLite stores text in an `INTEGER` column unless the table is `STRICT`. |
 | `COLLATE NOCASE` | An ASCII case-insensitive comparison rule for text. | `'Aria'` and `'aria'` count as the same name. |
 | `NULL` | "Unknown" or "missing". Not the same as `0` or `''`. | `character_id IS NULL` means the item is in the vault. |
-| `NULLIF(a, b)` | Returns `NULL` if `a = b`; otherwise returns `a`. | Turns a zero gear cost into `NULL` so division is safe. |
+| `NULLIF(a, b)` | Returns `NULL` if `a = b`; otherwise returns `a`. | The view uses a `CASE` guard for the same effect: a zero gear cost produces `NULL` for `power_per_100g`. |
 | Integer division | Dividing two integers and discarding the remainder. | `5 / 2` is `2`; use `5.0 / 2` for `2.5`. |
 | Index | A data structure that speeds up lookups and can enforce uniqueness. | `ux_equipment_one_per_slot`. |
 | Partial index | An index that applies only to rows matching a `WHERE` clause. | Only equipped items are checked for one-per-slot. |
-| View | A saved `SELECT` query that behaves like a virtual table. | `v_character_loadout`, `v_equipment_value` (Session 4). |
+| View | A saved `SELECT` query that behaves like a virtual table. | `v_character_loadout`, which adds budget status and power per 100 gold to each character. |
 | Transaction | A group of statements that either all succeed or all roll back. | Loading the seed data atomically. |
 | Parameterised query | SQL with placeholders (`?`) and values supplied separately. | Prevents SQL injection. |
 | SQL injection | Malicious input that changes the SQL being executed. | Avoided by parameterised queries, never f-strings. |
 | `sqlite3` module | Python's standard-library SQLite driver. | `import sqlite3`. |
-| `:memory:` | A temporary database that exists only in memory. | Fast test fixtures. |
+| `:memory:` | A temporary database that exists only in memory. | Possible, but this project uses temporary files so the build pipeline is exercised. |
 | Single writer | SQLite allows one write transaction at a time. | Fine for a local portfolio project; not a multi-user app. |
 | `PRAGMA integrity_check` | Checks the database's internal consistency. | Must return `ok` after the build. |
 | `PRAGMA foreign_key_check` | Reports rows that violate foreign keys. | Must return no rows after the build. |
@@ -86,21 +86,21 @@ A living glossary for the project. If a term is missing, add it here rather than
 | `WHERE` | Filter individual rows. | `WHERE character_id IS NULL`. |
 | `ORDER BY` | Sort the result. | Sort by `role_power DESC`. |
 | `GROUP BY` | Collapse rows into groups so aggregates can be calculated. | One row per character. |
-| `HAVING` | Filter groups after aggregation. | Characters whose total gear cost exceeds budget. |
+| `HAVING` | Filter groups after aggregation. | Q5 uses it to find duplicate names and double-booked slots. |
 | `JOIN` / `INNER JOIN` | Return only rows that match in both tables. | Characters with their assigned equipment. |
 | `LEFT JOIN` | Return all rows from the left table, with `NULL` where the right table has no match. | Characters with no items still appear in the roster. |
 | `ON` | The join condition. | `equipment.character_id = characters.character_id`. |
 | `CASE` | SQL's if/else expression. | Map role to its power weights; label budget status. |
 | Aggregate function | `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`; collapses many rows into one value. | `SUM(cost_gold)`. |
 | `COALESCE` | Return the first non-`NULL` argument. | `COALESCE(SUM(cost_gold), 0)` for characters with no gear. |
-| Subquery | A query inside another query. | Used in the capstone recommendation query. |
+| Subquery | A query inside another query. | Q8 uses a scalar subquery to total the vault's value. |
 | CTE (`WITH`) | A named temporary result set that makes a complex query readable. | `WITH slots(slot) AS (VALUES ...)`. |
 | Window function | Computes a value across related rows without collapsing them. | `RANK() OVER (PARTITION BY role ORDER BY role_power DESC)`. |
 | `RANK()` | Ranks rows, leaving gaps after ties. | Role power ranking. |
 | `ROW_NUMBER()` | Numbers rows sequentially, with no gaps. | Top item per slot. |
 | `PARTITION BY` | Splits rows into groups for a window function. | Partition by role or slot. |
 | `DISTINCT` | Remove duplicate rows. | Count distinct slots covered. |
-| `LIMIT` | Cap the number of rows returned. | Top three items per slot. |
+| `LIMIT` | Cap the number of rows returned. | Not used; the result sets are small enough to return in full. |
 | `IN` | Match any value in a list. | `role IN ('Tank', 'Healer', 'Damage', 'Support')`. |
 | `BETWEEN` | Inclusive range check. | `level BETWEEN 1 AND 60`. |
 | `IS NULL` | Test for `NULL`. Use `IS`, not `=`. | `WHERE character_id IS NULL`. |
@@ -121,8 +121,8 @@ A living glossary for the project. If a term is missing, add it here rather than
 | Positive test | Confirms that valid input succeeds. | Insert a valid character. |
 | Negative test | Confirms that invalid input is rejected. | Insert a character with role `Wizard`. |
 | Defect | A bug: behaviour that violates the requirements. | Recorded in the defect log. |
-| Defect log | A record of symptom, root cause, fix, and regression test. | `docs/06_defect_log.md` (planned). |
-| Test plan | What will be tested, how, and with what data. | `docs/05_test_plan.md` (planned). |
+| Defect log | A record of symptom, root cause, fix, and regression test. | `docs/06_defect_log.md`. |
+| Test plan | What will be tested, how, and with what data. | `docs/05_test_plan.md`. |
 | Coverage | How much of the requirements and code are tested. | Qualitative here: every business rule has a test. |
 | CI | Continuous integration: run tests automatically on push. | Optional stretch. |
 | `pytest` | A Python test framework. | `pytest -q`. |

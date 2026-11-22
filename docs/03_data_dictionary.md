@@ -10,7 +10,7 @@ This dictionary defines every column in the database. It follows a conventional 
 ## 1. How to read this document
 
 - **Required?** means the column cannot contain `NULL`.
-- **Type** is the SQLite type planned for the logical model.
+- **Type** is the SQLite type declared in `sql/schema.sql`.
 - **Permitted values** are the allowed values or range.
 - **Example** is a plausible value, not necessarily a row in the seed data.
 - **Notes** record the constraint or design decision attached to the column.
@@ -45,9 +45,10 @@ This dictionary defines every column in the database. It follows a conventional 
 - `CHECK (attack_bonus + defense_bonus + healing_bonus + speed_bonus > 0)` — an item must do something.
 - `CREATE UNIQUE INDEX ux_equipment_one_per_slot ON equipment(character_id, slot) WHERE character_id IS NOT NULL;` — a character may have at most one equipped item per slot, while the vault may hold many items in the same slot.
 
-## 4. Draft DDL
+## 4. Schema DDL
 
-This is the planned schema for Session 2. It is included here so the data dictionary and the physical design can be reviewed together. It has not yet been committed as `sql/schema.sql`.
+The authoritative DDL is `sql/schema.sql`. It is reproduced here so the
+dictionary and the physical design can be reviewed together.
 
 ```sql
 CREATE TABLE characters (
@@ -82,9 +83,15 @@ ON equipment(character_id, slot)
 WHERE character_id IS NOT NULL;
 ```
 
-`STRICT` requires SQLite 3.37 or later. This machine has 3.45.1.
+`STRICT` requires SQLite 3.37 or later. The project was built and tested with
+SQLite 3.50.4.
 
-Validated against SQLite 3.45.1 on 2026-11-18: valid rows insert; duplicate names (including case-only differences), invalid roles/levels/budgets, blank names, invalid slots, zero costs, all-zero stats, orphan foreign keys, and double-booked slots are rejected; multiple vault items in one slot are allowed; deleting a character sets the item's `character_id` to `NULL`.
+Validated against SQLite 3.50.4 on 2026-11-22: valid rows insert; duplicate
+names (including case-only differences), invalid roles/levels/budgets, blank
+names, invalid slots, zero or negative costs, all-zero stats, orphan foreign
+keys, and double-booked slots are rejected; multiple vault items in one slot
+are allowed; deleting a character sets the item's `character_id` to `NULL`.
+The 12-character, 40-item seed data loads cleanly.
 
 ## 5. Derived metrics
 
@@ -97,38 +104,38 @@ These are calculated in views and queries; they are not stored columns.
 | `role_power` | `CASE role` with the weights from the brief. | `0` |
 | `budget_remaining` | `budget_gold - gear_cost`. | Equal to `budget_gold` |
 | `budget_status` | `Over`, `At`, or `Under`. | `Under` (unless the budget is 0, then `At`) |
-| `power_per_100g` | `100.0 * role_power / NULLIF(gear_cost, 0)`. | `NULL` |
+| `power_per_100g` | `100.0 * role_power / gear_cost` when `gear_cost > 0`. | `NULL` |
 | `empty_slots` | `7 - COUNT(DISTINCT slot)`. | `7` |
 | `over_budget` | `gear_cost > budget_gold`. | `FALSE` |
 
 ## 6. Business rules and where they are enforced
 
-| ID | Rule | Enforced by | Planned test |
+| ID | Rule | Enforced by | Test |
 |---|---|---|---|
 | BR-01 | Character names are unique, trimmed, non-empty, case-insensitive. | `UNIQUE COLLATE NOCASE`; `CHECK` | `test_duplicate_character_name_is_rejected`, `test_blank_character_name_is_rejected` |
 | BR-02 | Role is one of four values. | `CHECK` | `test_invalid_role_is_rejected` |
-| BR-03 | Level is 1–60. | `CHECK` | `test_level_boundaries` |
+| BR-03 | Level is 1–60. | `CHECK` | `test_level_outside_range_is_rejected`, `test_level_boundaries` |
 | BR-04 | Budget is ≥ 0. | `CHECK` | `test_negative_budget_is_rejected` |
-| BR-05 | Item names are unique, trimmed, non-empty, case-insensitive. | `UNIQUE COLLATE NOCASE`; `CHECK` | `test_duplicate_item_name_is_rejected`, `test_blank_item_name_is_rejected` |
+| BR-05 | Item names are unique, trimmed, non-empty, case-insensitive. | `UNIQUE COLLATE NOCASE`; `CHECK` | `test_duplicate_equipment_name_is_rejected`, `test_blank_equipment_name_is_rejected` |
 | BR-06 | Slot is one of seven values. | `CHECK` | `test_invalid_slot_is_rejected` |
 | BR-07 | Rarity is one of five values. | `CHECK` | `test_invalid_rarity_is_rejected` |
-| BR-08 | Cost is > 0. | `CHECK` | `test_zero_or_negative_cost_is_rejected` |
-| BR-09 | Stats are ≥ 0 and at least one is > 0. | `CHECK` | `test_negative_stat_is_rejected`, `test_all_zero_stats_is_rejected` |
+| BR-08 | Cost is > 0. | `CHECK` | `test_zero_cost_is_rejected`, `test_negative_cost_is_rejected` |
+| BR-09 | Stats are ≥ 0 and at least one is > 0. | `CHECK` | `test_negative_stat_is_rejected`, `test_item_with_no_effect_is_rejected` |
 | BR-10 | An item is assigned to at most one character. | Single nullable `character_id` column | `test_item_can_be_reassigned` |
-| BR-11 | A character has at most one item per slot. | Partial unique index | `test_character_cannot_equip_two_items_in_same_slot` |
+| BR-11 | A character has at most one item per slot. | Partial unique index | `test_second_equipped_item_in_same_slot_is_rejected`, `test_multiple_vault_items_in_same_slot_are_allowed` |
 | BR-12 | Deleting a character returns gear to the vault. | `ON DELETE SET NULL` plus `PRAGMA foreign_keys = ON` | `test_delete_character_returns_gear_to_vault` |
 | BR-13 | No orphaned equipment. | Foreign key plus `PRAGMA foreign_keys = ON` | `test_orphan_equipment_is_rejected` |
-| BR-14 | Characters may have zero items; items may be unassigned. | Nullable FK; `LEFT JOIN` in queries | `test_character_with_no_items_appears_in_roster` |
+| BR-14 | Characters may have zero items; items may be unassigned. | Nullable FK; `LEFT JOIN` in queries | `test_character_with_no_items_appears_in_loadout` |
 
-## 7. Seed data design targets
+## 7. Seed data
 
-The exact values will be frozen in Session 3 and used in query tests.
+The exact values are frozen in `data/` and used in the query tests.
 
-| Target | Reason |
+| Actual | Reason |
 |---|---|
 | 12 characters, 3 per role | Enough for a meaningful within-role ranking. |
-| 40 items, 5–6 per slot | Enough competition per slot without manual data entry becoming the project. |
-| Roughly 28 assigned, 12 in the vault | Both equipped and unassigned items appear in the analysis. |
+| 40 items, at least 3 per slot | Enough competition per slot without manual data entry becoming the project. |
+| 26 assigned, 14 in the vault | Both equipped and unassigned items appear in the analysis. |
 | At least one character with zero items | Exercises `LEFT JOIN` and `COALESCE`. |
 | At least one character with an empty slot | Exercises the empty-slots query. |
 | At least one character over budget | Exercises the over-budget query and a negative remaining budget. |
@@ -142,12 +149,13 @@ The exact values will be frozen in Session 3 and used in query tests.
 
 - All data is synthetic and hand-authored for this project.
 - No copyrighted game data, scraped wiki content, or personal data.
-- If names or lore are drawn from the author's own world-building, that is original work and will be noted in the README.
-- Code license: MIT (to be added before publication).
-- Data license: CC BY 4.0 or CC0 (to be decided before publication).
+- If names or lore are drawn from the author's own world-building, that is original work and is noted in the README.
+- Code license: MIT. See `LICENSE`.
+- Data license: CC0 1.0. See `data/README.md`.
 
 ## 9. Change log
 
 | Date | Change |
 |---|---|
-| 2026-11-18 | Initial dictionary and draft DDL (Session 1). |
+| 2026-11-18 | Initial dictionary and draft DDL. |
+| 2026-11-22 | Schema and tests final; seed data expanded to 12 characters and 40 items; view metrics documented; licenses confirmed. |

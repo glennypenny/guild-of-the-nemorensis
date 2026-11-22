@@ -5,10 +5,10 @@
 | Project | Guild of the Nemorensis — Gear Audit |
 | Repository | `guild-of-the-nemorensis` |
 | Author | Glen Salmon |
-| Status | Work in progress — schema, seed data, and build pipeline complete; analysis queries and tests next |
-| Version | 0.1.0 |
+| Status | Complete for the planned scope |
+| Version | 1.0.0 |
 | Target roles | QA / software testing; data analyst |
-| Stack | Python 3.12, SQLite 3.45, pytest |
+| Stack | Python 3.12, SQLite 3.50, pytest |
 | Scope mode | A — audit current loadouts and recommend per-slot upgrades |
 
 ## 1. Purpose
@@ -84,8 +84,8 @@ An item is either assigned to one character or unassigned in the guild vault. A 
 - Optional assignment: `equipment.character_id` may be `NULL`.
 - Constraints: primary key, foreign key, `NOT NULL`, `UNIQUE`, `CHECK`, `STRICT`, partial unique index, `COLLATE NOCASE`.
 - Eight analysis queries covering joins, aggregates, CTEs, views, and window functions.
-- A pytest suite with 15+ tests across schema, constraints, data quality, and queries.
-- A defect log with 3–5 real defects and regression tests.
+- A pytest suite with 50 tests across schema, constraints, data quality, queries, and the build pipeline.
+- A defect log with four real defects and regression tests.
 - README, ERD, glossary, interview notes, LinkedIn post, and CV bullets.
 
 ## 8. Out of scope and limitations
@@ -103,7 +103,7 @@ An item is either assigned to one character or unassigned in the guild vault. A 
 
 ## 9. Data provenance
 
-All data is original and hand-authored for this project. No copyrighted game data, scraped wiki content, or personal data is used. If names or lore are drawn from the author's own world-building, that is original work and will be noted in the README. The dataset will be small enough to inspect by hand.
+All data is original and hand-authored for this project. No copyrighted game data, scraped wiki content, or personal data is used. If names or lore are drawn from the author's own world-building, that is original work and is noted in the README. The dataset is small enough to inspect by hand.
 
 ## 10. Design approach
 
@@ -119,18 +119,18 @@ The domain, data, schema, and queries are original to this project.
 
 ## 11. Definition of done
 
-A fresh clone can be built and tested with one command, and the README tells the whole story:
+A fresh clone can be built and tested with the commands in the README, and the README tells the whole story:
 
-- [ ] 12 characters and 40 items load cleanly from CSV.
-- [ ] `PRAGMA integrity_check` returns `ok`.
-- [ ] `PRAGMA foreign_key_check` returns no rows.
-- [ ] All eight queries run and their outputs are documented.
-- [ ] 15+ pytest tests pass in under 60 seconds.
-- [ ] The defect log contains 3–5 real defects with regression tests.
-- [ ] The data dictionary covers every column.
-- [ ] The README explains the schema, queries, limitations, and what was learned.
-- [ ] No secrets, copyrighted data, or real personal data.
-- [ ] LinkedIn post and two CV bullets are drafted.
+- [x] 12 characters and 40 items load cleanly from CSV.
+- [x] `PRAGMA integrity_check` returns `ok`.
+- [x] `PRAGMA foreign_key_check` returns no rows.
+- [x] All eight queries run and their outputs are documented.
+- [x] 50 pytest tests pass in under 60 seconds.
+- [x] The defect log contains four real defects with regression tests.
+- [x] The data dictionary covers every column.
+- [x] The README explains the schema, queries, limitations, and what was learned.
+- [x] No secrets, copyrighted data, or real personal data.
+- [x] LinkedIn post and two CV bullets are drafted.
 
 ## 12. Build plan
 
@@ -139,9 +139,9 @@ A fresh clone can be built and tested with one command, and the README tells the
 | 1 | Brief, glossary, conceptual model, data dictionary | `docs/00`–`03`, `docs/07` | Complete |
 | 2 | Schema and ERD | `sql/schema.sql` | Complete |
 | 3 | Seed CSVs, build script, health checks | `data/`, `src/build_db.py` | Complete |
-| 4 | Views and eight queries | `sql/views.sql`, `sql/queries/`, outputs | In progress |
-| 5 | pytest suite and defect log | `tests/`, `docs/05`–`06` | Planned |
-| 6 | README polish, LinkedIn, CV bullets | public repo | Planned |
+| 4 | Views and eight queries | `sql/views.sql`, `sql/queries/`, outputs | Complete |
+| 5 | pytest suite and defect log | `tests/`, `docs/05`–`06` | Complete |
+| 6 | README polish, LinkedIn, CV bullets | public repo | Complete |
 
 ## 13. Confirmed decisions
 
@@ -151,7 +151,8 @@ A fresh clone can be built and tested with one command, and the README tells the
 - Roles: Tank, Healer, Damage, Support.
 - Slots: Weapon, Off-hand, Head, Chest, Legs, Feet, Accessory.
 - Stats: attack, defense, healing, speed.
-- Python 3.12 + SQLite 3.45 + pytest in a project venv.
+- Python 3.12 + SQLite 3.50 + pytest in a project venv.
 - Repo is standalone and self-contained.
 - Data hand-authored and original.
-- License: TBD (MIT for code; CC BY 4.0 or CC0 for data).
+- License: MIT for code; CC0 for data.
+- Build is atomic: a failed build leaves the previous database untouched.

@@ -91,7 +91,7 @@ There is one relationship: **a character can be assigned equipment**.
 
 This is an **optional one-to-many** relationship. The foreign key lives on the "many" side: `equipment.character_id`.
 
-The rule "a character has at most one item per slot" is a **business rule**, not a cardinality of the relationship. It will be enforced by a partial unique index in the logical model.
+The rule "a character has at most one item per slot" is a **business rule**, not a cardinality of the relationship. It is enforced by a partial unique index in the schema.
 
 ## 5. Business rules
 
@@ -213,4 +213,4 @@ These are interview talking points: knowing what you deliberately excluded is as
 - [x] Business rules agreed.
 - [x] Assumptions and limitations agreed.
 - [x] Two-table decision agreed.
-- [ ] Logical model and ERD (Session 2).
+- [x] Logical model, schema, and ERD implemented in `sql/schema.sql` and the README.
