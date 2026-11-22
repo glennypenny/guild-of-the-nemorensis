@@ -1,8 +1,9 @@
 -- Guild of the Nemorensis — Gear Audit
--- My first attempt at a SQL project: this schema creates the characters and equipment tables for my fantasy adventure database.
+-- This schema creates the characters and equipment tables for the guild's
+-- gear audit. The build script runs it on a fresh database.
 --
 -- SQLite note: foreign keys are enforced per connection, not stored in the file.
--- Run this before using the schema:
+-- Run this on every connection before relying on the foreign keys:
 --   PRAGMA foreign_keys = ON;
 
 CREATE TABLE characters (
